@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CST Football Ground Booking</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1>CST Football Ground Booking</h1>
+            <p>Automated Digital Scheduling Platform</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="booking-section">
+            <h2>Register / Reserve Slot</h2>
+            <form id="booking-form" novalidate>
+
+                <div class="form-group">
+                    <label for="user-name">Full Name / Group Name:</label>
+                    <input type="text" id="user-name" placeholder="Enter your name or club name" required>
+                    <span class="error-message" id="name-error"></span>
+                </div>
+
+                <div class="grid-inputs">
+                    <div class="form-group">
+                        <label for="user-category">Category:</label>
+                        <select id="user-category">
+                            <option value="In Campus">In Campus (Student/Staff)</option>
+                            <option value="Out Campus">Out Campus (External)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="contact-label" for="user-contact">Student Number:</label>
+                        <input type="text" id="user-contact" placeholder="e.g., 02230100" required>
+                        <span class="error-message" id="contact-error"></span>
+                    </div>
+                </div>
+
+                <div class="grid-inputs">
+                    <div class="form-group">
+                        <label for="booking-date">Date:</label>
+                        <input type="date" id="booking-date" required>
+                        <span class="error-message" id="date-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="time-slot">Available Time Slot:</label>
+                        <select id="time-slot">
+                            </select>
+                        <span class="error-message" id="slot-error"></span>
+                    </div>
+                </div>
+                
+                <button type="submit" id="book-btn">Confirm Booking</button>
+            </form>
+        </section>
+
+        <hr class="section-divider">
+
+        <section id="records-section">
+            <h2>Current Ground Schedule & Assignments</h2>
+            <div id="booking-list" class="booking-grid">
+                </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
