@@ -10,14 +10,14 @@ const errorHandler = require('./src/middleware/errorHandler');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Mount utility core global middleware layers
+// Universal Middleware Layout Layers
 app.use(cors());
 app.use(express.json());
 
-// Expose front-end assets instantly using built-in middleware
+// Expose public folder for static frontend delivery
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Connect individual modular framework routes
+// Connect API routing sub-structures
 app.use('/api/slots', slotRoutes);
 app.use('/api/bookings', bookingRoutes);
 

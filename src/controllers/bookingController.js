@@ -1,6 +1,6 @@
 const db = require('../models/db');
 
-// GET /api/bookings - Fetch reservations linked alongside the related slot parameters
+// GET /api/bookings - Fetch reservations linked to their specific slot titles
 const getAllBookings = (req, res, next) => {
     try {
         const query = `
@@ -14,20 +14,19 @@ const getAllBookings = (req, res, next) => {
     } catch (err) { next(err); }
 };
 
-// POST /api/bookings - File record insertion into database after processing input structural checks
+// POST /api/bookings - Insert booking records and handle conflicts
 const createBooking = (req, res, next) => {
     try {
         const { name, category, contact, date, slot_id } = req.body;
         
-        // Input validation sequence logic
         if (!name || !category || !contact || !date || !slot_id) {
             return res.status(400).json({ success: false, message: 'All booking fields are completely mandatory' });
         }
 
-        // Avoid double booking double-reservations on the exact field index properties
+        // Prevent duplicate bookings on the same date and slot
         const conflict = db.prepare('SELECT id FROM bookings WHERE date = ? AND slot_id = ?').get(date, slot_id);
         if (conflict) {
-            return res.status(400).json({ success: false, message: 'This field layout time is already booked for this date!' });
+            return res.status(400).json({ success: false, message: 'This time slot is already booked for this date!' });
         }
 
         const statement = db.prepare('INSERT INTO bookings (name, category, contact, date, slot_id) VALUES (?, ?, ?, ?, ?)');
@@ -38,7 +37,7 @@ const createBooking = (req, res, next) => {
     } catch (err) { next(err); }
 };
 
-// PUT /api/bookings/:id - Modify reservation attributes dynamically
+// PUT /api/bookings/:id - Modify booking parameters
 const updateBooking = (req, res, next) => {
     try {
         const { name, category, contact, date, slot_id } = req.body;
@@ -62,7 +61,7 @@ const updateBooking = (req, res, next) => {
     } catch (err) { next(err); }
 };
 
-// DELETE /api/bookings/:id - Wipe selected appointment identity row out of scope
+// DELETE /api/bookings/:id - Wipe selected appointment out of database
 const deleteBooking = (req, res, next) => {
     try {
         const info = db.prepare('DELETE FROM bookings WHERE id = ?').run(req.params.id);
@@ -71,4 +70,5 @@ const deleteBooking = (req, res, next) => {
     } catch (err) { next(err); }
 };
 
+// Export functions to be consumed by the bookings router
 module.exports = { getAllBookings, createBooking, updateBooking, deleteBooking };
